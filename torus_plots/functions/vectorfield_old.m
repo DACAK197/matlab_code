@@ -1,6 +1,10 @@
 function [] = vectorfield(rad,lng,theta,radius,rad_velocity,vaz_vel, data)
-%SUBCO IS NOT CURRENTLY AUTOMATED, MUST CHANGE MANUALLY
-subco = 1; %Sub-corotation velocity, vrad off
+box = textread('/home/dcoffin/2D_Model-master/onebox.f90', '%s','delimiter', '\n');
+subco_line = box{134};
+break_line = regexp(subco_line, '=', 'split');
+cell_subco = break_line(1,2);
+subco = str2num(cell_subco{1});
+%subco = 1; %Sub-corotation velocity, vrad off
 subco_arry = ones((lng+1)*rad,1)*subco; %Creates Sub-corotation velocity array, vrad off
 %radius = reshape(radius, lng+1, rad);
 v_theta = zeros((lng+1)*rad, 1);

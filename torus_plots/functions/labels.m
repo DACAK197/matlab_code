@@ -65,8 +65,9 @@ function [] = labels(species, property, day )
                         property = 'Intensity';
                         units = '(cm^{-3}/eV)';
                         
-                    else if property == 'MIXR'
-                            property = 'MixingRatio';
+                    else if property == 'PUV_'
+                            property = 'Power Output'; 
+                            units = '(eV/s)';
                         end
                     end
                 end

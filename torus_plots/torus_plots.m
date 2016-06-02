@@ -33,10 +33,10 @@ property_save = property; %Saves property argument
 
 
 %Creates Directories for output plots
-%mkdir(strcat(strtpath,'/../output_plots'));
-%mkdir(strcat(strtpath,'/../output_plots/images'))
-mkdir(strcat(strtpath,'/../output_plots/images/',species,'_',property))
-%mkdir(strcat(strtpath,'/../output_plots/videos'));
+mkdir(strcat(strtpath,'/../output_plots'));
+mkdir(strcat(strtpath,'/../output_plots/images'));
+mkdir(strcat(strtpath,'/../output_plots/images/',species,'_',property));
+mkdir(strcat(strtpath,'/../output_plots/videos'));
 
 
 %AVI Writing Stuff

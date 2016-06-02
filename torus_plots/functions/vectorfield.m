@@ -1,7 +1,12 @@
 function [] = vectorfield(rad,lng,theta,radius,rad_velocity,vaz_vel, data)
 box = textread('/home/dcoffin/2D_Model-master/onebox.f90', '%s','delimiter', '\n');
-subco_line = box{134};
-break_line = regexp(subco_line, '=', 'split');
+box_tf = strfind(box,'if( .not. vrad .and. .not. vmass)');
+for k = 1:length(box_tf)
+    if box_tf{k} == 1
+        subco_line = k;
+    end
+end
+break_line = regexp(box{subco_line}, '=', 'split');
 cell_subco = break_line(1,2);
 subco = str2num(cell_subco{1});
 %subco = 1; %Sub-corotation velocity, vrad off
