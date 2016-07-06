@@ -1,4 +1,4 @@
-function[] = torus_plots(type, species, property, specified_day, vec_on, n)
+function[] = torus_plots_test(type, species, property, specified_day, vec_on, n)
 close all
 format long
 restoredefaultpath %Resets Path
@@ -32,15 +32,15 @@ property_save = property; %Saves property argument
 
 
 %Creates Directories for output plots
-mkdir(strcat(strtpath,'/output_plots'));
-mkdir(strcat(strtpath,'/output_plots/images'));
-mkdir(strcat(strtpath,'/output_plots/images/',species,'_',property));
-mkdir(strcat(strtpath,'/output_plots/videos'));
+mkdir(strcat(strtpath,'/testplots/output_plots'));
+mkdir(strcat(strtpath,'/testplots/output_plots/images'));
+mkdir(strcat(strtpath,'/testplots/output_plots/images/',species,'_',property));
+mkdir(strcat(strtpath,'/testplots/output_plots/videos'));
 
 
 %AVI Writing Stuff
 filename = strcat(species, property, 'map.avi'); %Filename for movie
-video_folder = strcat(strtpath,'/output_plots/videos/',filename); %Folder Path for Movie
+video_folder = strcat(strtpath,'/testplots/output_plots/videos/',filename); %Folder Path for Movie
 writerObj = VideoWriter(video_folder);
 writerObj.FrameRate = 5; %Changes framerate for output avi
 open(writerObj);
@@ -74,13 +74,29 @@ for day = specified_day
         property = property_save; %Grabs saved property
         %s3pfile = dir(strcat(strtpath,'/plots/data/s3p/', property, '/', property, 's3p', '*_3D.dat'));
         data = load(folder(day).name); %Loads current data file according to day
+        %data(1:5,:)
         %data2 = load(s3pfile(day).name);
-        if n == 'norm'
+        if strcmp(n, 'norm') == 1
             %[norm_values] = normalize_values(data,data2,lng,rad); %Normalizes values on 0-1 scaling
-            [norm_values] = normalize_values(data,lng,rad); %Normalizes values on 0-1 scaling
+            [norm_values] = normalize_values_test(data,lng,rad); %Normalizes values on 0-1 scaling
             value = norm_values; %Sets to normalized values
-        else
-            value = data(:,2); %Sets to non-normalized values
+        elseif strcmp(n, 'normpast') == 1
+            totalnorm = zeros((rad*(lng+1)),1);
+            for daypast = 1:200
+                datapast = load(folder(daypast).name);
+                totalnorm = totalnorm + datapast(:,2);
+            end
+            pastavg = totalnorm/200;
+            %pastavg(1:5)
+            normdata = data;
+            for i = 1:length(data)
+                normdata(i,:) = data(i,:)/pastavg(i);
+            value = normdata(:,2);
+            end
+            %value(1:5)
+            %preerupt_values = rot90(preerupt_values,-1);    %Rotates the data set in order for torus_plots to read.
+            else
+                value = data(:,2); %Sets to non-normalized values
         end
         
         nl2data = load(nl2folder(day+1).name); %Loads nl2 data file according to day
@@ -124,7 +140,7 @@ for day = specified_day
         warning(w)
         hold on
         hC = colorbar('FontSize',12); %Adds colorbar for values
-        caxis([0, 12000]);
+        caxis([0,2])
         %hC.FontSize = 12;
         
         colormap(jet) %Sets a nice rainbow colormap
@@ -161,18 +177,18 @@ for day = specified_day
     
     frame = getframe(hFig); %Grabs current frame
     [G,map] = frame2im(frame); %Converts frame to image
-    image_file = strcat(strtpath,'/output_plots/images/',species,'_',property,'/',leading_zero,num2str(day),'.jpg');
+    image_file = strcat(strtpath,'/testplots/output_plots/images/',species,'_',property,'/',leading_zero,num2str(day),'.jpg');
     imwrite(G,image_file); %Saves image as a .jpg
     writeVideo(writerObj, frame); %Writes frame to avi
     species = species_save; %Resets species name (May not be needed).
-    
+  
     end
     
     
 end
 close(writerObj); %Closes video writing
 hold off
-image_folder = strcat(strtpath, '/output_plots/images/',species,'_',property,'/');
+image_folder = strcat(strtpath, '/testplots/output_plots/images/',species,'_',property,'/');
 slider_plot(image_folder);
 addpath(genpath(strcat(f_path,'/../')));
 end
