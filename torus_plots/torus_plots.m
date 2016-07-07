@@ -124,7 +124,6 @@ for day = specified_day
         warning(w)
         hold on
         hC = colorbar('FontSize',12); %Adds colorbar for values
-        caxis([0, 12000]);
         %hC.FontSize = 12;
         
         colormap(jet) %Sets a nice rainbow colormap
@@ -134,10 +133,10 @@ for day = specified_day
         hold on
         
         
-                %h = polar((radial_max_data(:,1)*(pi/180))+pi/18,radial_max_data(:,3), '.'); %Overlays white points of
-                %...maximum value in each radial bin
-                %    set(h,'markersize', 25);
-                %set(h, 'color', 'w');
+                h = polar((radial_max_data(:,1)*(pi/180))+pi/18,radial_max_data(:,3), '.'); %Overlays white points of
+                ...maximum value in each radial bin
+                   set(h,'markersize', 25);
+                set(h, 'color', 'w');
         
         labels(species, property, day) %Adds labels of species, property, and day.
         %drawnow

@@ -80,13 +80,14 @@ for day = specified_day
             %[norm_values] = normalize_values(data,data2,lng,rad); %Normalizes values on 0-1 scaling
             [norm_values] = normalize_values_test(data,lng,rad); %Normalizes values on 0-1 scaling
             value = norm_values; %Sets to normalized values
-        elseif strcmp(n, 'normpast') == 1
+        elseif strcmp(n(1:6), 'before') == 1  %Normalizes via first N days, user supplies N
             totalnorm = zeros((rad*(lng+1)),1);
-            for daypast = 1:200
+            lastday = str2num(n(7:9));
+            for daypast = 1:lastday
                 datapast = load(folder(daypast).name);
                 totalnorm = totalnorm + datapast(:,2);
             end
-            pastavg = totalnorm/200;
+            pastavg = totalnorm/lastday;
             %pastavg(1:5)
             normdata = data;
             for i = 1:length(data)
@@ -140,7 +141,7 @@ for day = specified_day
         warning(w)
         hold on
         hC = colorbar('FontSize',12); %Adds colorbar for values
-        caxis([0,2])
+        caxis([0.9,2])
         %hC.FontSize = 12;
         
         colormap(jet) %Sets a nice rainbow colormap
@@ -155,7 +156,7 @@ for day = specified_day
                 %    set(h,'markersize', 25);
                 %set(h, 'color', 'w');
         
-        labels(species, property, day) %Adds labels of species, property, and day.
+        labels_test(species, property, day, n) %Adds labels of species, property, and day.
         %drawnow
         
         %Vector Field calculation

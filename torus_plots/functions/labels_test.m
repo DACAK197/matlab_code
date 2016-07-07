@@ -1,4 +1,4 @@
-function [] = labels(species, property, day, n )
+function [] = labels(species, property, day, n)
 
 %Adds labels for azimuth, species, property, units, and day. Consider
 %redoing for effiency. 
@@ -73,6 +73,11 @@ function [] = labels(species, property, day, n )
                 end
             end
         end
+    end
+    
+    if strcmp(n(1:6), 'before') == 1
+        lastday = n(7:9);
+        units = strcat(property(1), '/<', property(1), '_{', lastday, '}>');
     end
     
     % ADD TEXT FOR UNITS
