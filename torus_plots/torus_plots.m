@@ -75,12 +75,27 @@ for day = specified_day
         %s3pfile = dir(strcat(strtpath,'/plots/data/s3p/', property, '/', property, 's3p', '*_3D.dat'));
         data = load(folder(day).name); %Loads current data file according to day
         %data2 = load(s3pfile(day).name);
-        if n == 'norm'
+        if strcmp(n, 'norm') == 1
             %[norm_values] = normalize_values(data,data2,lng,rad); %Normalizes values on 0-1 scaling
             [norm_values] = normalize_values(data,lng,rad); %Normalizes values on 0-1 scaling
             value = norm_values; %Sets to normalized values
-        else
-            value = data(:,2); %Sets to non-normalized values
+        elseif strcmp(n(1:3), 'bef') == 1  %Normalizes via first N days, user supplies N
+            totalnorm = zeros((rad*(lng+1)),1);
+            lastday = str2num(n(7:9));
+            for daypast = 1:lastday
+                datapast = load(folder(daypast).name);
+                totalnorm = totalnorm + datapast(:,2);
+            end
+            pastavg = totalnorm/lastday;
+            %pastavg(1:5)
+            normdata = data;
+            for i = 1:length(data)
+                normdata(i,:) = data(i,:)/pastavg(i);
+            value = normdata(:,2);
+            end       
+            %preerupt_values = rot90(preerupt_values,-1);    %Rotates the data set in order for torus_plots to read.
+            else
+                value = data(:,2); %Sets to non-normalized values
         end
         
         nl2data = load(nl2folder(day+1).name); %Loads nl2 data file according to day
@@ -124,6 +139,9 @@ for day = specified_day
         warning(w)
         hold on
         hC = colorbar('FontSize',12); %Adds colorbar for values
+        if strcmp(n(1:3), 'bef') == 1 
+            caxis([0.9,2.0]) 
+        end
         %hC.FontSize = 12;
         
         colormap(jet) %Sets a nice rainbow colormap
@@ -138,7 +156,7 @@ for day = specified_day
                    set(h,'markersize', 25);
                 set(h, 'color', 'w');
         
-        labels(species, property, day) %Adds labels of species, property, and day.
+        labels(species, property, day, n) %Adds labels of species, property, and day.
         %drawnow
         
         %Vector Field calculation

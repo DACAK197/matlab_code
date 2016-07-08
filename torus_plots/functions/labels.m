@@ -1,4 +1,4 @@
-function [] = labels(species, property, day, n )
+function [] = labels(species, property, day, n)
 
 %Adds labels for azimuth, species, property, units, and day. Consider
 %redoing for effiency. 
@@ -12,66 +12,42 @@ function [] = labels(species, property, day, n )
     TeXString_270 = texlabel('270');
     y = text((5*cos((3*pi)/2))-0.7,(11*sin((3*pi)/2)),TeXString_270,'FontSize',20);
     
-    if length(char(species)) == 2
-        
-        if char(species) == 'sp'
-            species = 'S^{+}';
-        else if char(species) == 'op'
-                species = 'O^{+}';
-            end
+    if strcmp(n(1:3), 'bef') == 1
+        lastday = n(7:9);
+        units = strcat(property(1), '/<', property(1), '_{', lastday, '}>');
+    end
+    
+    speciesarr = cellstr(['sp  ';'op  '; 's2p '; 'o2p '; 's3p '; 'elec']);
+    speclabelarr = cellstr(['S^{+}   '; 'O^{+}   '; 'S^{2+}  '; 'O^{2+}  '; 'S^{3+}  '; 'Electron']);
+    
+    for i = 1:length(speciesarr)
+        if strcmp(species, speciesarr(i)) == 1
+            specieslabel = speclabelarr(i);
+        else
+            i = i+1;
         end
     end
-    if length(char(species)) == 3
-        
-        if char(species) == 's3p'
-            species = 'S^{3+}';
-        else if char(species) == 's2p'
-                species = 'S^{2+}';
-            else if char(species) == 'o2p'
-                    species = 'O^{2+}';
-                end
-            end
-        end
-    end
-    if length(char(species)) == 4
-        char(species) == 'elec';
-        species = 'Electron';
-        
-        TeXString_species = texlabel(species);
+    
+    if strcmp(species, 'elec') == 1
+        TeXString_species = texlabel(specieslabel);
         h=text(-9,-9.5,TeXString_species,'FontSize',20);
         
     else
-        TeXString_species = texlabel(species);
+        TeXString_species = texlabel(specieslabel);
         h=text(-10,-9.5,TeXString_species,'FontSize',20);
 
     end
-    if property == 'NL2_'
-        property = 'NL^{2}';
-        units = 'Flux-Tube Content';
-        
-    else if property == 'DENS'
-            property = 'Density';
-            units = '(cm^{-3})';
-            
-        else if property == 'TEMP'
-                property = 'Temperature';
-                units = '(eV)';
-                
-            else if property == 'MIXR'
-                    property = 'Mixing Ratio';
-                    units = '';
-                    
-                else if property == 'INTS'
-                        property = 'Intensity';
-                        units = '(cm^{-3}/eV)';
-                        
-                    else if property == 'PUV_'
-                            property = 'Power Output'; 
-                            units = '(eV/s)';
-                        end
-                    end
-                end
-            end
+  
+    proparr = cellstr(['DENS'; 'INTS'; 'MIXR'; 'NL2_'; 'PUV_'; 'TEMP']);
+    proplabelarr = [cellstr('Density'); cellstr('Intensity'); cellstr('Mixing Ratio'); cellstr('Flux-Tube'); cellstr('Power Output'); cellstr('Temperature')];
+    unitsarr = [cellstr('(cm^{-3})'); cellstr('cm^{-3}/eV)'); cellstr(''); cellstr('Content'); cellstr('(eV/s)'); cellstr('(eV)')];
+    
+    for i = 1:length(proparr)
+        if strcmp(property, proparr(i)) == 1
+            proplabel = proplabelarr(i);
+            units = unitsarr(i);
+        else
+            i = i+1;
         end
     end
     
@@ -82,7 +58,7 @@ function [] = labels(species, property, day, n )
     TeXString_day = texlabel(strcat('Day_',num2str(day)));
     p=text(-10,10,TeXString_day,'FontSize',20);
     
-    TeXString_property = texlabel(property);
+    TeXString_property = texlabel(proplabel);
     p=text(5,-9.5,TeXString_property,'FontSize',20);
     
    
