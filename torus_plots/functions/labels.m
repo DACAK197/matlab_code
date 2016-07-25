@@ -12,11 +12,6 @@ function [] = labels(species, property, day, n)
     TeXString_270 = texlabel('270');
     y = text((5*cos((3*pi)/2))-0.7,(11*sin((3*pi)/2)),TeXString_270,'FontSize',20);
     
-    if strcmp(n(1:3), 'bef') == 1
-        lastday = n(7:9);
-        units = strcat(property(1), '/<', property(1), '_{', lastday, '}>');
-    end
-    
     speciesarr = cellstr(['sp  ';'op  '; 's2p '; 'o2p '; 's3p '; 'elec']);
     speclabelarr = cellstr(['S^{+}   '; 'O^{+}   '; 'S^{2+}  '; 'O^{2+}  '; 'S^{3+}  '; 'Electron']);
     
@@ -49,6 +44,11 @@ function [] = labels(species, property, day, n)
         else
             i = i+1;
         end
+    end
+    
+    if strcmp(n(1:3), 'bef') == 1
+        lastday = n(7:9);
+        units = strcat(property(1), '/<', property(1), '_{', lastday, '}>');
     end
     
     % ADD TEXT FOR UNITS

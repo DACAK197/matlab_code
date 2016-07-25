@@ -21,8 +21,8 @@ property_save = property; %Saves property argument
 
 
 %SIZE OF MODEL RUN
-%  lng = 36; %Number of longitudinal bins. (This can be found in do and dimensions.f90),(Consider making this an argument instead, or letting the program find it)
-%  rad = 24; %Number of radial bins. (This can be found in do and dimensions.f90),(Consider making this an argument instead, or letting the program find it)
+%  lng = 21; %Number of longitudinal bins. (This can be found in do and dimensions.f90),(Consider making this an argument instead, or letting the program find it)
+%  rad = 21; %Number of radial bins. (This can be found in do and dimensions.f90),(Consider making this an argument instead, or letting the program find it)
 [lng,rad] = FindDimensions(strtpath);
 
 %Added Paths=
@@ -32,10 +32,10 @@ property_save = property; %Saves property argument
 
 
 %Creates Directories for output plots
-mkdir(strcat(strtpath,'/output_plots'));
-mkdir(strcat(strtpath,'/output_plots/images'));
-mkdir(strcat(strtpath,'/output_plots/images/',species,'_',property));
-mkdir(strcat(strtpath,'/output_plots/videos'));
+%mkdir(strcat(strtpath,'/output_plots'));
+%mkdir(strcat(strtpath,'/output_plots/images'));
+%mkdir(strcat(strtpath,'/output_plots/images/',species,'_',property));
+%mkdir(strcat(strtpath,'/output_plots/videos'));
 
 
 %AVI Writing Stuff
@@ -103,6 +103,7 @@ for day = specified_day
         theta = data(:,1)*(pi/180); %Selects Azimuthal position and converts to radians
         radius = data(:,3); %Selects Radial position
 
+
         [radial_max_data,nl2current,nl2currentradius] = max_data(data,nl2data,rad,lng,vec_on); %Finds maximum value for each radial bin
         ...and selects nl2 value for transport calculation
             dimension = size(value); %Finds Matrix dimensions of value set
@@ -112,35 +113,39 @@ for day = specified_day
             [rad_velocity, vaz_vel] = calculateTransport(nl2current, nl2currentradius, strtpath, rad, lng); %Calculates radial and azimuthal transport
         end
         
+        
         [x,y,c] = pol2cart(theta, radius, value);
         
-        X = reshape(x,radial_dimension,2);
-        Y = reshape(y,radial_dimension,2);
-        C = reshape(c,radial_dimension,2);
+        X = reshape(x,rad+1,lng);
+        Y = reshape(y,rad+1,lng);
+        C = reshape(c,rad+1,lng);
         clf
         
         pcolor(X,Y,C); %Plots color map of Torus
-        
         
         set(gca,'YDir', 'reverse') %Flips Torus plot
         set(gcf, 'Position', [350, 150, 730, 650]);
         shading interp
         hold on
+        
+        %{
         xend = 6.*cos(0:0.0001:2*pi); %Cuts off edges made from azimuthal resolution
         yend = 6.*sin(0:0.0001:2*pi); %Cuts off more edges
         plot(xend,yend,'w','LineWidth',2) %Does said cutting
         
-        xend2 = 10.25.*cos(0:0.0001:2*pi);%Cuts off edges made from azimuthal resolution
-        yend2 = 10.25.*sin(0:0.0001:2*pi);%Cuts off more edges
+        xend2 = 12*cos(0:0.0001:2*pi);%Cuts off edges made from azimuthal resolution
+        yend2 = 12*sin(0:0.0001:2*pi);%Cuts off more edges
         plot(xend2,yend2,'w','LineWidth',2)%Does said cutting
+        %}
+  
         hold on
         w = warning ('off','all');
         PlotAxisAtOrigin(x,y); %Plots an axis on top of the torus, centered at the origin.
         warning(w)
         hold on
         hC = colorbar('FontSize',12); %Adds colorbar for values
-        if strcmp(n(1:3), 'bef') == 1 
-            caxis([0.9,2.0]) 
+        if strcmp(n(1:3), 'bef') == 1 %Forced colorbar for past normalized plots
+            caxis([0.9,1.5]) 
         end
         %hC.FontSize = 12;
         
@@ -151,10 +156,10 @@ for day = specified_day
         hold on
         
         
-                h = polar((radial_max_data(:,1)*(pi/180))+pi/18,radial_max_data(:,3), '.'); %Overlays white points of
-                ...maximum value in each radial bin
-                   set(h,'markersize', 25);
-                set(h, 'color', 'w');
+               % h = polar((radial_max_data(:,1)*(pi/180))+pi/18,radial_max_data(:,3), '.'); %Overlays white points of
+               % ...maximum value in each radial bin
+               %    set(h,'markersize', 25);
+               % set(h, 'color', 'w');
         
         labels(species, property, day, n) %Adds labels of species, property, and day.
         %drawnow
