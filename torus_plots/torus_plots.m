@@ -1,10 +1,24 @@
 function[] = torus_plots(type, species, property, specified_day, vec_on, n)
+
+%{
+species = input('Species? ', 's');
+property = input('Property? ', 's');
+dayalpha = input('First day to plot? ');
+dayomega = input('Last day to plot? ' );
+specified_day = dayalpha:dayomega;
+vec_on = input('Vector field? [1/0] ');
+normin = input('Normalization? ', 's');
+
+if strcmp(normin, 'y') == 1
+    n = 'norm';
+else n = normin;
+end
+%}
+
 close all
 format long
 restoredefaultpath %Resets Path
 hFig = figure; %Opens blank Figure
-
-
 
 %%%%%%%%%%%ENTER PATH TO THE 2D MODEL FOLDER HERE%%%%%%%%%%%%%%%%
 strtpath = '/home/dcoffin/2D_Model-master';  %Your saved 2D_Model-master location
@@ -21,8 +35,6 @@ property_save = property; %Saves property argument
 
 
 %SIZE OF MODEL RUN
-%  lng = 21; %Number of longitudinal bins. (This can be found in do and dimensions.f90),(Consider making this an argument instead, or letting the program find it)
-%  rad = 21; %Number of radial bins. (This can be found in do and dimensions.f90),(Consider making this an argument instead, or letting the program find it)
 [lng,rad] = FindDimensions(strtpath);
 
 %Added Paths=
@@ -32,13 +44,13 @@ property_save = property; %Saves property argument
 
 
 %Creates Directories for output plots
-%mkdir(strcat(strtpath,'/output_plots'));
-%mkdir(strcat(strtpath,'/output_plots/images'));
-%mkdir(strcat(strtpath,'/output_plots/images/',species,'_',property));
-%mkdir(strcat(strtpath,'/output_plots/videos'));
+mkdir(strcat(strtpath,'/output_plots'));
+mkdir(strcat(strtpath,'/output_plots/images'));
+mkdir(strcat(strtpath,'/output_plots/images/',species,'_',property));
+mkdir(strcat(strtpath,'/output_plots/videos'));
 
 
-%AVI Writing Stuff
+%AVI initialization
 filename = strcat(species, property, 'map.avi'); %Filename for movie
 video_folder = strcat(strtpath,'/output_plots/videos/',filename); %Folder Path for Movie
 writerObj = VideoWriter(video_folder);
@@ -140,12 +152,17 @@ for day = specified_day
   
         hold on
         w = warning ('off','all');
-        PlotAxisAtOrigin(x,y); %Plots an axis on top of the torus, centered at the origin.
+        %PlotAxisAtOrigin(x,y); %Plots an axis on top of the torus, centered at the origin.
         warning(w)
         hold on
         hC = colorbar('FontSize',12); %Adds colorbar for values
         if strcmp(n(1:3), 'bef') == 1 %Forced colorbar for past normalized plots
-            caxis([0.9,1.5]) 
+            highion = {'s2p', 'o2p', 's3p'};
+            if any(strcmp(highion, species)) == 1
+                caxis([0.7, 2.5])
+            else
+                caxis([0.7,1.5]) 
+            end
         end
         %hC.FontSize = 12;
         
