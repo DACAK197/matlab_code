@@ -11,8 +11,8 @@ folder1 = dir(strcat('/home/dcoffin/2D_Model-master/plots/data/',species1,'/',pa
 folder2 = dir(strcat('/home/dcoffin/2D_Model-master/plots/data/',species2,'/',param,'/*_3D.dat')); 
 peak=0.2;
 
-lng=18;
-rad=18;
+lng=12;
+rad=12;
 
 len=length(folder1);
 
@@ -54,9 +54,9 @@ for ring=1:plotnum
 %         ax(ring)=subplot(ceil(rad/2),2,ring*2-floor(rad/2)*2);
 %     end
     if (ring == 1 && strcmp(param,'MIXR'))
-        plot(ax(ring),days(100:len-1),amp1(100:len-1,ring), '--', days(100:len-1), amp2(100:len-1,ring), days, GaussDens(:), days, GaussElec(:), 'linewidth', 1.15);
+        plot(ax(ring),days(10:len-1),amp1(10:len-1,ring), '--', days(10:len-1), amp2(10:len-1,ring), days, GaussDens(:), days, GaussElec(:), 'linewidth', 1.15);
     else
-        plot(ax(ring),days(100:len-1),amp1(100:len-1,ring), '--', days(100:len-1), amp2(100:len-1,ring), 'linewidth', 1.15);
+        plot(ax(ring),days(10:len-1),amp1(10:len-1,ring), '--', days(10:len-1), amp2(10:len-1,ring), 'linewidth', 1.15);
     end
     if ring==plotnum
         legend('S^+', 'S^{+++}', 'Location', 'northwest', 'orientation', 'horizontal');
@@ -66,9 +66,9 @@ for ring=1:plotnum
     %title(ax(ring),strcat('Radius = ', num2str(radius(ring)) , ' Rj'));  
     xlim([0 len-1]);
     set(ax(ring), 'ylim', [0 1.0*ampmax]) %ceil(ampmax*10)/10]);
-    set(ax(ring), 'xlim', [100 len-1]) 
+    set(ax(ring), 'xlim', [10 len-1]) 
     set(ax(ring), 'XTickLabel',{})
-    set(ax(ring), 'XTick',100:50:len-1)
+    set(ax(ring), 'XTick',10:50:len-1)
     set(ax(ring), 'yTick',0.05:0.05:1.3*ampmax)
     if ring==ceil(plotnum/2)
         if param=='MIXR'
