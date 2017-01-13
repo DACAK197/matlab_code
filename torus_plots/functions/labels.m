@@ -33,9 +33,9 @@ function [] = labels(species, property, day, n)
 
     end
   
-    proparr = cellstr(['DENS'; 'INTS'; 'MIXR'; 'NL2_'; 'PUV_'; 'TEMP']);
-    proplabelarr = [cellstr('Density'); cellstr('Intensity'); cellstr('Mixing Ratio'); cellstr('Flux-Tube'); cellstr('Power Output'); cellstr('Temperature')];
-    unitsarr = [cellstr('(cm^{-3})'); cellstr('cm^{-3}/eV)'); cellstr(''); cellstr('Content'); cellstr('(eV/s)'); cellstr('(eV)')];
+    proparr = cellstr(['DENS'; 'INTS'; 'MIXR'; 'NL2_'; 'PUV_'; 'TEMP'; 'FEH_']);
+    proplabelarr = [cellstr('Density'); cellstr('Intensity'); cellstr('Mixing Ratio'); cellstr('Flux-Tube'); cellstr('Power Output'); cellstr('Temperature'); cellstr('Hot Electron')];
+    unitsarr = [cellstr('(cm^{-3})'); cellstr('cm^{-3}/eV)'); cellstr(''); cellstr('Content'); cellstr('(eV/s)'); cellstr('(eV)'); cellstr('(cm^{-3})')];
     
     for i = 1:length(proparr)
         if strcmp(property, proparr(i)) == 1

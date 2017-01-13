@@ -21,4 +21,4 @@ for j = 1:length(elecparam)
     torus_plots('map', 'elec', elecparam{j}, 1:100, 0, 'nork')
 end
 
-weighted_amplitude
+%weighted_amplitude

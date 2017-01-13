@@ -44,15 +44,15 @@ property_save = property; %Saves property argument
 
 
 %Creates Directories for output plots
-mkdir(strcat(strtpath,'../../../output_plots'));
-mkdir(strcat(strtpath,'../../../output_plots/images'));
-mkdir(strcat(strtpath,'../../../output_plots/images/',species,'_',property));
-mkdir(strcat(strtpath,'../../../output_plots/videos'));
+mkdir(strcat(strtpath,'/home/dcoffin/output_plots'));
+mkdir(strcat(strtpath,'/home/dcoffin/output_plots/images'));
+mkdir(strcat(strtpath,'/home/dcoffin/output_plots/images/',species,'_',property));
+mkdir(strcat(strtpath,'/home/dcoffin/output_plots/videos'));
 
 
 %AVI initialization
 filename = strcat(species, property, 'map.avi'); %Filename for movie
-video_folder = strcat(strtpath,'../../../output_plots/videos/',filename); %Folder Path for Movie
+video_folder = strcat(strtpath,'/home/dcoffin/output_plots/videos/',filename); %Folder Path for Movie
 writerObj = VideoWriter(video_folder);
 writerObj.FrameRate = 5; %Changes framerate for output avi
 open(writerObj);
@@ -200,7 +200,7 @@ for day = specified_day
     
     frame = getframe(hFig); %Grabs current frame
     [G,map] = frame2im(frame); %Converts frame to image
-    image_file = strcat(strtpath,'../../../output_plots/images/',species,'_',property,'/',leading_zero,num2str(day),'.jpg');
+    image_file = strcat(strtpath,'/home/dcoffin/output_plots/images/',species,'_',property,'/',leading_zero,num2str(day),'.jpg');
     imwrite(G,image_file); %Saves image as a .jpg
     writeVideo(writerObj, frame); %Writes frame to avi
     species = species_save; %Resets species name (May not be needed).
@@ -211,7 +211,7 @@ for day = specified_day
 end
 close(writerObj); %Closes video writing
 hold off
-image_folder = strcat(strtpath, '../../../output_plots/images/',species,'_',property,'/');
+image_folder = strcat(strtpath, '/home/dcoffin/output_plots/images/',species,'_',property,'/');
 slider_plot(image_folder);
 addpath(genpath(strcat(f_path,'/../')));
 end
