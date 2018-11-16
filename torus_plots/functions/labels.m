@@ -12,8 +12,8 @@ function [] = labels(species, property, day, n)
     TeXString_270 = texlabel('270');
     y = text((5*cos((3*pi)/2))-0.7,(11*sin((3*pi)/2)),TeXString_270,'FontSize',20);
     
-    speciesarr = cellstr(['sp  ';'op  '; 's2p '; 'o2p '; 's3p '; 'elec']);
-    speclabelarr = cellstr(['S^{+}   '; 'O^{+}   '; 'S^{2+}  '; 'O^{2+}  '; 'S^{3+}  '; 'Electron']);
+    speciesarr = cellstr(['sp  ';'op  '; 's2p '; 'o2p '; 's3p '; 'elec ']); 
+    speclabelarr = cellstr(['S^{+}   '; 'O^{+}   '; 'S^{2+}  '; 'O^{2+}  '; 'S^{3+}  '; 'Electron ']);
     
     for i = 1:length(speciesarr)
         if strcmp(species, speciesarr(i)) == 1
@@ -33,9 +33,9 @@ function [] = labels(species, property, day, n)
 
     end
   
-    proparr = cellstr(['DENS'; 'INTS'; 'MIXR'; 'NL2_'; 'PUV_'; 'TEMP'; 'FEH_']);
-    proplabelarr = [cellstr('Density'); cellstr('Intensity'); cellstr('Mixing Ratio'); cellstr('Flux-Tube'); cellstr('Power Output'); cellstr('Temperature'); cellstr('Hot Electron')];
-    unitsarr = [cellstr('(cm^{-3})'); cellstr('cm^{-3}/eV)'); cellstr(''); cellstr('Content'); cellstr('(eV/s)'); cellstr('(eV)'); cellstr('(cm^{-3})')];
+    proparr = cellstr(['DENS'; 'INTS'; 'MIXR'; 'NL2_'; 'PUV_'; 'TEMP'; 'FEH_'; 'dNL2']);
+    proplabelarr = [cellstr('Density'); cellstr('Intensity'); cellstr('Mixing Ratio'); cellstr('Flux Tube'); cellstr('Power Output'); cellstr('Temperature'); cellstr('Hot Electron'); cellstr('Flux Tube gradient')];
+    unitsarr = [cellstr('(cm^{-3})'); cellstr('cm^{-3}/eV)'); cellstr(''); cellstr('Content'); cellstr('(eV/s)'); cellstr('(eV)'); cellstr('(cm^{-3})'); cellstr('dNL2')];
     
     for i = 1:length(proparr)
         if strcmp(property, proparr(i)) == 1
